@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chomsky Hierarchy Explorer</title>
+  <!--  <link rel="stylesheet" href="style.css"> -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            color: #fff;
+            padding: 20px;
+            margin: 0;
+        }
+
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+            letter-spacing: 1px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        main {
+            margin-top: 20px;
+        }
+
+        /* Introduction Section */
+       /* .intro {
+            background-color: #1c1c1c;
+            border-left: 5px solid #007BFF;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        /* Hover Effect for Introduction */
+        /*.intro:hover {
+            background-color: rgba(0, 123, 255, 0.1); /* Light blue background on hover */
+       /* }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+
+        .intro h2 {
+            color: #007BFF;
+            font-size: 1.8em;
+        }
+
+        .intro p, .intro ul {
+            font-size: 1em;
+            margin: 0;
+        }
+
+        .intro ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .intro ul li {
+            background-color: #282828;
+            padding: 5px 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+        }*/
+
+        .intro {
+    background-color: #1c1c1c;
+    border-left: 5px solid #007BFF;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    animation: slideIn 0.8s ease-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Add shadow for depth */
+    transition: transform 0.3s; /* Smooth scaling effect */
+}
+
+/* Hover Effect for Introduction */
+.intro:hover {
+    background-color: rgba(0, 123, 255, 0.1); /* Light blue background on hover */
+    transform: scale(1.02); /* Slight scale effect on hover */
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+
+.intro h2 {
+    color: #007BFF;
+    font-size: 1.8em;
+    transition: color 0.3s; /* Transition effect for heading */
+}
+
+.intro h2:hover {
+    color: #0056b3; /* Darker blue on hover */
+}
+
+.intro p, .intro ul {
+    font-size: 1em;
+    margin: 0;
+    transition: opacity 0.3s; /* Fade in effect for text */
+}
+
+.intro ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.intro ul li {
+    background-color: #282828;
+    padding: 5px 10px;
+    margin: 5px 0;
+    border-radius: 4px;
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition for list items */
+}
+
+.intro ul li:hover {
+    background-color: #007BFF; /* Change background on hover */
+    color: white; /* Change text color on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+
+
+
+
+
+
+
+
+        .intro img {
+    width: 1000px; /* Increased the image width */
+    height: 300px;
+    margin-left: 20px; /* Add margin to separate from text */
+    transition: transform 0.5s ease; /* Smooth animation for hover effect */
+}
+
+.intro img:hover {
+    transform: scale(1.05); /* Zoom out effect on hover */
+}
+
+
+        @keyframes rotateIn {
+            from { transform: rotate(-360deg); }
+            to { transform: rotate(0); }
+        }
+
+
+
+
+
+
+
+
+
+
+    .language-card {
+    background-color: #282828;
+    border-radius: 8px;
+    margin: 10px;
+    padding: 20px;
+    transition: transform 0.5s ease, background-color 0.5s ease; /* Slow transition effect */
+    cursor: pointer;
+    text-align: center;
+}
+
+.language-card:hover {
+    transform: scale(1.05); /* Slightly increase size */
+    background-color: #007BFF; /* Change background color on hover */
+}
+
+.language-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column layout */
+    gap: 20px;
+}
+
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #282828;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+          
+
+
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #111;
+    color: #fff;
+    padding: 20px;
+    margin: 0;
+}
+
+h2 {
+    text-align: center;
+    color: #007BFF;
+    margin-bottom: 20px;
+    font-size: 2em;
+    text-shadow: 1px 1px 2px rgba(0, 123, 255, 0.5);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Shadow effect */
+}
+
+th, td {
+    padding: 12px 15px;
+    border: 1px solid #282828;
+    text-align: left;
+}
+
+th {
+    background-color: #007BFF;
+    color: #fff;
+    position: relative; /* For hover effect */
+}
+
+th:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    cursor: pointer; /* Pointer cursor */
+}
+
+td {
+    background-color: #2a2a2a; /* Default cell background */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+tr:nth-child(even) td {
+    background-color: #1c1c1c; /* Even row background */
+}
+
+tr:hover td {
+    background-color: #333; /* Darker background on row hover */
+}
+
+tr:nth-child(odd) td {
+    background-color: #2a2a2a; /* Odd row background */
+}
+
+/* Responsive text for small screens */
+@media (max-width: 600px) {
+    h2 {
+        font-size: 1.5em;
+    }
+    th, td {
+        padding: 10px;
+    }
+}
+
+
+
+
+.practice-session {
+    margin-top: 20px;
+    text-align: center; /* Center the content */
+    background-color: #2a2a2a; /* Dark background color */
+    border: 2px solid #007BFF; /* Blue border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Padding for spacing */
+    color: #fff; /* Text color */
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4); /* Shadow effect */
+}
+
+
+.output-message {
+    margin-top: 10px;
+    color: #007BFF; /* Change the color of the output message */
+}
+
+
+</style>
+</head>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    <header>
+        <h1>Chomsky Hierarchy Explorer</h1>
+        <p>Explore the different levels of the Chomsky Hierarchy</p>
+    </header>
+
+    <main>
+        <div class="intro">
+            <div>
+                <h2>Introduction</h2>
+                <p>The Chomsky hierarchy classifies languages based on their generative grammars. It consists of four levels:</p>
+                <ul>
+                    <li>Type 0: Unrestricted Grammar</li>
+                    <li>Type 1: Context-Sensitive Grammar</li>
+                    <li>Type 2: Context-Free Grammar</li>
+                    <li>Type 3: Regular Grammar</li>
+                </ul>
+            </div>
+            <img src="12312.png" alt="Chomsky Illustration" />
+        </div>
+
+        <div id="page1" class="language-grid">
+            <div class="language-card" onclick="showModal('Type 0: Unrestricted Grammar')">
+                <h3>Type 0: Unrestricted Grammar</h3>
+                <p>Recognized by Turing machines.</p>
+            </div>
+            <div class="language-card" onclick="showModal('Type 1: Context-Sensitive Grammar')">
+                <h3>Type 1: Context-Sensitive Grammar</h3>
+                <p>Generated by context-sensitive grammars.</p>
+            </div>
+            <div class="language-card" onclick="showModal('Type 2: Context-Free Grammar')">
+                <h3>Type 2: Context-Free Grammar</h3>
+                <p>Generated by context-free grammars.</p>
+            </div>
+            <div class="language-card" onclick="showModal('Type 3: Regular Grammar')">
+                <h3>Type 3: Regular Grammar</h3>
+                <p>Generated by regular grammars.</p>
+            </div>
+        </div>
+
+
+
+<body>
+    <h2>Chomsky Hierarchy Comparison Table</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Grammar</th>
+                <th>Languages</th>
+                <th>Recognizing Automaton</th>
+                <th>Production Rules (Constraints)</th>
+                <th>Examples</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Type-3</td>
+                <td>Regular</td>
+                <td>Finite-state automaton</td>
+                <td>A → a <br>A → aB (right regular) <br>or A → a <br>A → Ba (left regular)</td>
+                <td>L = {a<sup>n</sup> | n > 0}</td>
+            </tr>
+            <tr>
+                <td>Type-2</td>
+                <td>Context-free</td>
+                <td>Non-deterministic pushdown automaton</td>
+                <td>A → α</td>
+                <td>L = {a<sup>n</sup>b<sup>n</sup> | n > 0}</td>
+            </tr>
+            <tr>
+                <td>Type-1</td>
+                <td>Context-sensitive</td>
+                <td>Linear-bounded non-deterministic Turing machine</td>
+                <td>αAβ → αγβ</td>
+                <td>L = {a<sup>n</sup>b<sup>n</sup>c<sup>n</sup> | n > 0}</td>
+            </tr>
+            <tr>
+                <td>Type-0</td>
+                <td>Recursively enumerable</td>
+                <td>Turing machine</td>
+                <td>γ → α (γ non-empty)</td>
+                <td>L = {w | w describes a terminating Turing machine}</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+
+
+
+
+
+
+
+
+
+<div class="practice-session">
+    <h2>Practice Session</h2>
+    <label for="exampleInput">Enter a grammar example (e.g., S → aSb):</label>
+    <input type="text" id="exampleInput" placeholder="Type your example here">
+    <button onclick="checkGrammarType()">Submit</button>
+    <p id="output" class="output-message"></p>
+</div>
+
+
+
+
+<script>
+    // Toggle details row
+    function toggleDetails(row) {
+        const detailsRow = row.nextElementSibling;
+        if (detailsRow.classList.contains('details')) {
+            detailsRow.style.display = detailsRow.style.display === 'table-row' ? 'none' : 'table-row';
+        }
+    }
+
+    // Sort table
+    function sortTable(columnIndex) {
+        const table = document.getElementById("comparisonTable");
+        const rows = Array.from(table.rows).slice(1);
+        const isAscending = table.querySelectorAll("th")[columnIndex].classList.toggle("sorted-asc");
+        
+        rows.sort((a, b) => {
+            const aText = a.cells[columnIndex].innerText.toLowerCase();
+            const bText = b.cells[columnIndex].innerText.toLowerCase();
+            return isAscending ? aText.localeCompare(bText) : bText.localeCompare(aText);
+        });
+        
+        rows.forEach(row => table.appendChild(row));
+    }
+</script>
+
+
+
+
+
+</main>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Modal Structure -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <div id="modalDetails"></div>
+            <h3>Examples:</h3>
+            <pre id="examples"></pre>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Chomsky Hierarchy Explorer. All rights reserved.</p>
+        <p>References: <a href="https://www.geeksforgeeks.org/chomsky-hierarchy-in-theory-of-computation/" target="_blank" style="color: #007BFF;">GeeksforGeeks</a></p>
+    </footer>
+
+    <script>
+        const languageDetails = {
+    'Type 0: Unrestricted Grammar': {
+        details: `
+            Type-0 grammars include all formal grammars. 
+            There are no constraints on the production rules. 
+            They generate exactly all languages that can be recognized by a Turing machine, 
+            thus any language that is possible to be generated can be generated by a Type-0 grammar. 
+            These languages are also known as the recursively enumerable 
+            or Turing-recognizable languages.
+        `,
+        examples: [
+            "For example: S → aSb | ε"
+        ]
+    },
+    'Type 1: Context-Sensitive Grammar': {
+        details: `
+            Type-1 grammars generate context-sensitive languages. 
+            These grammars have rules of the form αAβ → αγβ 
+            with A being a nonterminal and α, β, and γ strings of terminals and/or nonterminals. 
+            The strings α and β may be empty, but γ must be nonempty. 
+            The rule S → ε is allowed if S does not appear on the right side of any rule. 
+            The languages described by these grammars are exactly all languages 
+            that can be recognized by a linear bounded automaton 
+            (a nondeterministic Turing machine whose tape is bounded 
+            by a constant times the length of the input).
+        `,
+        examples: [
+            "For example, the context-sensitive language L = { a^n b^n c^n | n > 0 }",
+            "is generated by the Type-1 grammar G = ({ S, A, B, C, W, Z }, { a, b }, P, S)",
+            "with the productions P being the following: S → aBC, S → aSBC, CB → CZ."
+        ]
+    },
+    'Type 2: Context-Free Grammar': {
+        details: `
+            Type-2 grammars generate context-free languages. 
+            These are defined by rules of the form A → α 
+            with A being a nonterminal and α being a string of terminals and/or nonterminals. 
+            These languages are exactly all languages that can be recognized 
+            by a non-deterministic pushdown automaton.
+        `,
+        examples: [
+            "For example, the context-free language L = { a^n b^n | n > 0 }",
+            "is generated by the Type-2 grammar G = ({ S }, { a, b }, P, S)",
+            "with the productions P being the following: S → aSb, S → ab."
+        ]
+    },
+    'Type 3: Regular Grammar': {
+        details: `
+            Regular (Type-3) grammars generate the regular languages. 
+            Such a grammar restricts its rules to a single nonterminal 
+            on the left-hand side and a right-hand side consisting of a single terminal, 
+            possibly followed by a single nonterminal, 
+            in which case the grammar is right regular. 
+            Alternatively, all the rules can have their right-hand sides consist of 
+            a single terminal, possibly preceded by a single nonterminal (left regular). 
+            These generate the same languages. 
+            However, if left-regular rules and right-regular rules are combined, 
+            the language need no longer be regular. 
+            The rule S → ε is also allowed here if S does not appear 
+            on the right side of any rule. 
+            These languages are exactly all languages that can be decided 
+            by a finite-state automaton. 
+            Additionally, this family of formal languages can be obtained 
+            by regular expressions. 
+            Regular languages are commonly used to define search patterns 
+            and the lexical structure of programming languages.
+        `,
+        examples: [
+            "For example, the regular language L = { a^n | n > 0 }",
+            "is generated by the Type-3 grammar G = ({ S }, { a, b }, P, S)",
+            "with the productions P being the following: S → aS, S → a."
+        ]
+    }
+};
+
+
+
+        function showModal(language) {
+            document.getElementById("modalTitle").innerText = language;
+            document.getElementById("modalDetails").innerHTML = languageDetails[language].details;
+            document.getElementById("examples").innerText = languageDetails[language].examples.join("\n");
+            document.getElementById("myModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+
+        function navigateToPage(page) {
+            alert(`Navigating to Page ${page}`);
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById("myModal");
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+        function checkGrammarType() {
+    const input = document.getElementById("exampleInput").value.trim();
+    const output = document.getElementById("output");
+    
+  // Logic to determine grammar type based on input
+  switch (input) {
+    // Type 0: Unrestricted Grammar
+    case "S → aSb | ε":
+        output.innerText = "This is a Type 2 (Context-Free) Language.";
+        break;
+    case "S → a | b":
+        output.innerText = "This is a Type 0 (Unrestricted) Language.";
+        break;
+
+    // Type 1: Context-Sensitive Grammar
+    case "S → aAb, A → aA | b":
+        output.innerText = "This is a Type 1 (Context-Sensitive) Language.";
+        break;
+    case "S → aBC":
+        output.innerText = "This is a Type 1 (Context-Sensitive) Language.";
+        break;
+    case "S → aSBC":
+        output.innerText = "This is a Type 1 (Context-Sensitive) Language.";
+        break;
+    case "CB → CZ":
+        output.innerText = "This is a Type 1 (Context-Sensitive) Language.";
+        break;
+    case "CZ → WZ":
+        output.innerText = "This is a Type 1 (Context-Sensitive) Language.";
+        break;
+    case "WZ → WC":
+        output.innerText = "This is a Type 1 (Context-Sensitive) Language.";
+        break;
+    case "WC → BC":
+        output.innerText = "This is a Type 1 (Context-Sensitive) Language.";
+        break;
+    case "aB → ab":
+        output.innerText = "This is a Type 1 (Context-Sensitive) Language.";
+        break;
+    case "bB → bb":
+        output.innerText = "This is a Type 1 (Context-Sensitive) Language.";
+        break;
+    case "bC → bc":
+        output.innerText = "This is a Type 1 (Context-Sensitive) Language.";
+        break;
+    case "cC → cc":
+        output.innerText = "This is a Type 1 (Context-Sensitive) Language.";
+        break;
+
+    // Type 2: Context-Free Grammar
+    case "S → aS | bS | ε":
+        output.innerText = "This is a Type 3 (Regular) Language.";
+        break;
+    case "S → 0S1 | ε":
+        output.innerText = "This is a Type 2 (Context-Free) Language.";
+        break;
+    case "S → aSb | bSa | ε":
+        output.innerText = "This is a Type 2 (Context-Free) Language.";
+        break;
+
+    // Type 1: Additional Context-Sensitive Examples
+    case "S → Aa | Ab | b":
+        output.innerText = "This is a Type 1 (Context-Sensitive) Language.";
+        break;
+    case "S → aA | bB, A → b | ε, B → b | ε":
+        output.innerText = "This is a Type 1 (Context-Sensitive) Language.";
+        break;
+
+    // Type 3: Regular Grammar
+    case "S → aS | bS | a | b":
+        output.innerText = "This is a Type 3 (Regular) Language.";
+        break;
+
+    // New example for the string "a"
+    case "S → a":
+        output.innerText = "This is a Type 3 (Regular) Language.";
+        break;
+
+    // New example for the string "aa"
+    case "S → aS | a":
+        output.innerText = "This is a Type 3 (Regular) Language.";
+        break;
+
+    // New example for the string "ab"
+    case "S → aB, B → b":
+        output.innerText = "This is a Type 3 (Regular) Language.";
+        break;
+
+    // Default case
+    default:
+        output.innerText = "This example might not match any known grammar types.";
+        break;
+}
+
+
+        }
+
+
+
+
+    </script>
+</body>
+</html>
